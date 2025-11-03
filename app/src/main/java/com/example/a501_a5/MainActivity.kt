@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -49,7 +50,7 @@ fun RecipeApp(recipeViewModel: RecipeViewModel = viewModel()) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination
-    val bottomRoutes = listOf(Routes.Home, Routes.Add)
+    val bottomRoutes = listOf(Routes.Home, Routes.Add, Routes.Settings)
     val shouldShowBottomBar = currentDestination?.route?.startsWith(Routes.Detail.route) != true
 
     Scaffold(
@@ -97,6 +98,9 @@ fun RecipeApp(recipeViewModel: RecipeViewModel = viewModel()) {
                     }
                 )
             }
+            composable(Routes.Settings.route) {
+                SettingsScreen()
+            }
             composable(
                 route = "${Routes.Detail.route}/{id}",
                 arguments = listOf(
@@ -141,6 +145,7 @@ private fun RecipeTopBar(
     val title = when {
         showBack -> "Recipe Details"
         route == Routes.Add.route -> "Add Recipe"
+        route == Routes.Settings.route -> "Settings"
         else -> "Recipes"
     }
 
@@ -171,6 +176,7 @@ private fun RecipeBottomBar(
             val (icon, label) = when (route) {
                 Routes.Home -> Icons.Default.Home to "Home"
                 Routes.Add -> Icons.Default.Add to "Add"
+                Routes.Settings -> Icons.Default.Settings to "Settings"
                 Routes.Detail -> Icons.Default.Home to "Detail"
             }
             NavigationBarItem(
